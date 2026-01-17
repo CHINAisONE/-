@@ -1,0 +1,2463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多主题随机点名系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* 默认主题：液态玻璃 */
+            --theme-name: "液态玻璃";
+            --bg-gradient: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+            --bg-color-1: #42a5f5;
+            --bg-color-2: #7e57c2;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-tertiary: rgba(255, 255, 255, 0.7);
+            --accent-color: rgba(255, 255, 255, 0.8);
+            --button-bg: rgba(255, 255, 255, 0.3);
+            --button-hover: rgba(255, 255, 255, 0.4);
+            --button-border: rgba(255, 255, 255, 0.2);
+            --stop-button-bg: rgba(255, 99, 132, 0.4);
+            --stop-button-border: rgba(255, 99, 132, 0.3);
+            --progress-bg: rgba(255, 255, 255, 0.15);
+            --transition-speed: 0.5s;
+            --font-main: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            --font-display: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        /* 清新薄荷主题 */
+        :root[data-theme="mint"] {
+            --theme-name: "清新薄荷";
+            --bg-gradient: linear-gradient(135deg, #81ECEC, #A8E6CF);
+            --bg-color-1: #00b894;
+            --bg-color-2: #74b9ff;
+            --glass-bg: rgba(255, 255, 255, 0.28);
+            --glass-border: rgba(255, 255, 255, 0.22);
+            --glass-shadow: 0 8px 32px 0 rgba(19, 104, 82, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.35);
+            --button-hover: rgba(255, 255, 255, 0.45);
+            --button-border: rgba(255, 255, 255, 0.25);
+            --stop-button-bg: rgba(255, 107, 107, 0.45);
+            --stop-button-border: rgba(255, 107, 107, 0.35);
+            --progress-bg: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 海洋蓝主题 */
+        :root[data-theme="ocean"] {
+            --theme-name: "海洋蓝";
+            --bg-gradient: linear-gradient(135deg, #1A91FF, #0047AB);
+            --bg-color-1: #1a91ff;
+            --bg-color-2: #0047ab;
+            --glass-bg: rgba(255, 255, 255, 0.18);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 40, 100, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.25);
+            --button-hover: rgba(255, 255, 255, 0.35);
+            --button-border: rgba(255, 255, 255, 0.2);
+            --stop-button-bg: rgba(255, 107, 107, 0.4);
+            --stop-button-border: rgba(255, 107, 107, 0.3);
+            --progress-bg: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 新增主题：日落橙 */
+        :root[data-theme="sunset"] {
+            --theme-name: "日落橙";
+            --bg-gradient: linear-gradient(135deg, #FF9A8B, #FF6A88);
+            --bg-color-1: #ff9a8b;
+            --bg-color-2: #ff6a88;
+            --glass-bg: rgba(255, 255, 255, 0.22);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: 0 8px 32px 0 rgba(121, 30, 45, 0.18);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.3);
+            --button-hover: rgba(255, 255, 255, 0.4);
+            --button-border: rgba(255, 255, 255, 0.2);
+            --stop-button-bg: rgba(255, 255, 255, 0.35);
+            --stop-button-border: rgba(255, 255, 255, 0.25);
+            --progress-bg: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 新增主题：森林绿 */
+        :root[data-theme="forest"] {
+            --theme-name: "森林绿";
+            --bg-gradient: linear-gradient(135deg, #38EF7D, #11998E);
+            --bg-color-1: #38ef7d;
+            --bg-color-2: #11998e;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(10, 70, 50, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.25);
+            --button-hover: rgba(255, 255, 255, 0.35);
+            --button-border: rgba(255, 255, 255, 0.2);
+            --stop-button-bg: rgba(255, 107, 107, 0.4);
+            --stop-button-border: rgba(255, 107, 107, 0.3);
+            --progress-bg: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 新增主题：紫罗兰 */
+        :root[data-theme="violet"] {
+            --theme-name: "紫罗兰";
+            --bg-gradient: linear-gradient(135deg, #8A2BE2, #9370DB);
+            --bg-color-1: #8a2be2;
+            --bg-color-2: #9370db;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(50, 20, 90, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.25);
+            --button-hover: rgba(255, 255, 255, 0.35);
+            --button-border: rgba(255, 255, 255, 0.2);
+            --stop-button-bg: rgba(255, 107, 107, 0.4);
+            --stop-button-border: rgba(255, 107, 107, 0.3);
+            --progress-bg: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 新增主题：科技灰 */
+        :root[data-theme="tech"] {
+            --theme-name: "科技灰";
+            --bg-gradient: linear-gradient(135deg, #2C3E50, #4CA1AF);
+            --bg-color-1: #2c3e50;
+            --bg-color-2: #4ca1af;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(10, 20, 30, 0.25);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.2);
+            --button-hover: rgba(255, 255, 255, 0.3);
+            --button-border: rgba(255, 255, 255, 0.15);
+            --stop-button-bg: rgba(255, 107, 107, 0.4);
+            --stop-button-border: rgba(255, 107, 107, 0.3);
+            --progress-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 新增主题：极光紫 */
+        :root[data-theme="aurora"] {
+            --theme-name: "极光紫";
+            --bg-gradient: linear-gradient(135deg, #654EA3, #EAafc8);
+            --bg-color-1: #654ea3;
+            --bg-color-2: #eaafc8;
+            --glass-bg: rgba(255, 255, 255, 0.22);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: 0 8px 32px 0 rgba(70, 30, 90, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.75);
+            --accent-color: rgba(255, 255, 255, 0.9);
+            --button-bg: rgba(255, 255, 255, 0.3);
+            --button-hover: rgba(255, 255, 255, 0.4);
+            --button-border: rgba(255, 255, 255, 0.2);
+            --stop-button-bg: rgba(255, 107, 107, 0.4);
+            --stop-button-border: rgba(255, 107, 107, 0.3);
+            --progress-bg: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+            transition: background-color var(--transition-speed) ease, 
+                        background-image var(--transition-speed) ease,
+                        border-color var(--transition-speed) ease,
+                        box-shadow var(--transition-speed) ease,
+                        color var(--transition-speed) ease;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            position: relative;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-info {
+            position: fixed;
+            top: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 50;
+            pointer-events: none;
+        }
+        
+        .current-time {
+            color: #000000;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        
+        .inspiration-quote {
+            color: #000000;
+            font-size: 1.0rem;
+            font-weight: 400;
+            max-width: 40%;
+            text-align: right;
+            font-style: normal;
+        }
+        
+        .bg-decoration {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.6;
+            z-index: 0;
+        }
+        
+        .bg-1 {
+            width: 700px;
+            height: 700px;
+            background: var(--bg-color-1);
+            top: -350px;
+            right: -200px;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .bg-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--bg-color-2);
+            bottom: -300px;
+            left: -200px;
+            animation: float 18s ease-in-out infinite 2s;
+        }
+        
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 20px;
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .glass:hover {
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 5;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 0;
+        }
+        
+        h1 {
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-family: var(--font-display);
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+            min-height: 0;
+            height: calc(100vh - 130px);
+        }
+        
+        @media (min-width: 768px) {
+            .main-content {
+                flex-direction: row;
+                height: calc(100vh - 140px);
+            }
+            
+            .name-display {
+                flex: 3;
+            }
+            
+            .control-panel {
+                flex: 2;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .main-content {
+                height: calc(100vh - 130px);
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .name-display {
+                flex: 1;
+                min-height: 0;
+            }
+            
+            .control-panel {
+                flex: 0 0 auto;
+                max-height: 50vh;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .inspiration-quote {
+                display: none;
+            }
+        }
+        
+        .name-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            overflow: hidden;
+            position: relative;
+            min-height: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .name-display.rolling-active {
+            transform: scale(1.01);
+        }
+        
+        .name-display.result-active {
+            background: linear-gradient(
+                -45deg, 
+                rgba(255,255,255,0.1), 
+                rgba(255,255,255,0.2), 
+                rgba(255,255,255,0.1)
+            );
+            background-size: 200% 200%;
+            animation: resultBackgroundPulse 3s ease infinite;
+        }
+        
+        .progress-container {
+            width: 80%;
+            max-width: 500px;
+            height: 6px;
+            background: var(--progress-bg);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .progress-container.active {
+            opacity: 1;
+        }
+        
+        .roll-progress {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+        
+        .name-effect-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .name-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--accent-color) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0;
+        }
+        
+        .ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 0;
+            opacity: 0;
+        }
+        
+        .celebration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+        
+        .initial-state, .loading-state, .result-state {
+            text-align: center;
+            width: 100%;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .user-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+        }
+        
+        .initial-state:hover .user-icon {
+            transform: scale(1.05) rotate(5deg);
+        }
+        
+        .initial-text {
+            color: var(--text-secondary);
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+        
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-bottom-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin 0.8s reverse linear infinite;
+        }
+        
+        .result-names {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+        
+        .result-name {
+            font-size: clamp(1.8rem, 7vw, 3.2rem);
+            font-weight: bold;
+            color: var(--text-primary);
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            letter-spacing: 0.05em;
+            font-family: var(--font-display);
+        }
+        
+        /* 双人模式样式 */
+        .mode-2 .result-name {
+            font-size: clamp(1.5rem, 6vw, 2.8rem);
+        }
+        
+        /* 四人模式样式 */
+        .mode-4 .result-name {
+            font-size: clamp(1.2rem, 5vw, 2.2rem);
+        }
+        
+        .control-panel {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow: hidden;
+        }
+        
+        /* 模式选择器样式 */
+        .mode-selector {
+            margin-bottom: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mode-title {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .mode-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .mode-option {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .mode-option:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .mode-option.active {
+            background: var(--button-bg);
+            border-color: var(--button-border);
+            color: var(--text-primary);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .roll-button {
+            background: var(--button-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            border: 1px solid var(--button-border);
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            min-height: 50px;
+            pointer-events: auto;
+            opacity: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .roll-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 6s infinite;
+        }
+        
+        .roll-button:hover {
+            background: var(--button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .roll-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .roll-button:disabled {
+            background: rgba(255, 255, 255, 0.15);
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .button-icon {
+            font-size: 1.4rem;
+        }
+        
+        .control-group {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        /* 主题切换样式 */
+        .theme-switcher {
+            margin-bottom: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .theme-title {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .current-theme {
+            color: var(--text-primary);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .theme-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .theme-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .theme-option:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .theme-option.active {
+            border-color: var(--text-primary);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+        
+        /* 主题颜色定义 */
+        .theme-default {
+            background: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+        }
+        
+        .theme-mint {
+            background: linear-gradient(135deg, #81ECEC, #A8E6CF);
+        }
+        
+        .theme-ocean {
+            background: linear-gradient(135deg, #1A91FF, #0047AB);
+        }
+        
+        .theme-sunset {
+            background: linear-gradient(135deg, #FF9A8B, #FF6A88);
+        }
+        
+        .theme-forest {
+            background: linear-gradient(135deg, #38EF7D, #11998E);
+        }
+        
+        .theme-violet {
+            background: linear-gradient(135deg, #8A2BE2, #9370DB);
+        }
+        
+        .theme-tech {
+            background: linear-gradient(135deg, #2C3E50, #4CA1AF);
+        }
+        
+        .theme-aurora {
+            background: linear-gradient(135deg, #654EA3, #EAafc8);
+        }
+
+        /* 速度控制样式 */
+        .speed-control {
+            margin-bottom: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .speed-label {
+            display: block;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .speed-value {
+            color: var(--text-primary);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .speed-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--progress-bg);
+            outline: none;
+        }
+        
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .speed-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .people-count {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .count-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+        
+        .count-text {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+        
+        .count-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-label {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 26px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-primary);
+            transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+        
+        .control-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+        
+        .control-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .control-button:active {
+            transform: scale(0.98);
+        }
+        
+        .stop-button {
+            background: var(--stop-button-bg);
+            border-color: var(--stop-button-border);
+        }
+        
+        .stop-button:hover {
+            background: rgba(255, 99, 132, 0.5);
+            border-color: rgba(255, 99, 132, 0.4);
+        }
+        
+        .all-done {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 12px;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .bottom-indicator {
+            width: 60px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px auto 15px;
+        }
+        
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-backdrop.active .modal {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .close-modal {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-body {
+            padding: 18px;
+            max-height: calc(80vh - 130px);
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .history-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .history-time {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+        
+        .modal-footer {
+            padding: 12px 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .clear-history {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .clear-history:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: opacity 0.8s ease;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .splash-title {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+            font-family: var(--font-display);
+        }
+        
+        .splash-quote {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-style: italic;
+            max-width: 600px;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .splash-author {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+        
+        .splash-timer {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+        
+        .splash-icon {
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+        
+        .splash-progress {
+            width: 80%;
+            max-width: 400px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .splash-progress-bar {
+            height: 100%;
+            background: var(--text-primary);
+            width: 0;
+            transition: width 1s linear;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            z-index: 150;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toast.active {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast.error {
+            background: var(--stop-button-bg);
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        @keyframes nameAppear {
+            0% { 
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            50% { 
+                opacity: 0.9;
+                transform: scale(1.1) translateY(-5px);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+            70% {
+                transform: scale(1.05);
+            }
+            100% { 
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                text-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+            }
+        }
+        
+        @keyframes glowPulse {
+            0% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% { 
+                opacity: 0.7;
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+            100% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.6);
+            }
+        }
+        
+        @keyframes rippleExpand {
+            0% { 
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            100% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(3);
+            }
+        }
+        
+        @keyframes quoteFade {
+            0% { opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { opacity: 0; }
+        }
+        
+        @keyframes resultBackgroundPulse {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .name-appear {
+            animation: nameAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.4) forwards;
+        }
+        
+        .glow-animate {
+            animation: glowPulse 1.5s ease-out forwards;
+        }
+        
+        .ripple-animate {
+            animation: rippleExpand 1.8s ease-out forwards;
+        }
+        
+        .quote-animate {
+            animation: quoteFade 15s ease-in-out forwards;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-info">
+        <div class="current-time" id="current-time"></div>
+        <div class="inspiration-quote" id="inspiration-quote"></div>
+    </div>
+
+    <div class="bg-decoration bg-1"></div>
+    <div class="bg-decoration bg-2"></div>
+
+    <div class="splash-screen" id="splash-screen">
+        <div class="splash-icon">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h1 class="splash-title">随机点名系统</h1>
+        <p class="splash-quote" id="splash-quote"></p>
+        <p class="splash-author" id="splash-author"></p>
+        <div class="splash-progress">
+            <div class="splash-progress-bar" id="splash-progress-bar"></div>
+        </div>
+        <p class="splash-timer" id="splash-timer">3 秒后进入</p>
+    </div>
+
+    <div class="container" id="main-container" style="display: none;">
+        <header>
+            <h1>随机点名</h1>
+            <p class="subtitle">公平随机 · 高效便捷</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="name-display glass" id="name-display">
+                <div class="celebration" id="celebration"></div>
+                <div class="initial-state" id="initial-state">
+                    <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <p class="initial-text">点击右侧按钮开始随机点名</p>
+                </div>
+                
+                <div class="loading-state" id="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p class="initial-text">随机选择中...</p>
+                    <div class="progress-container" id="roll-progress-container">
+                        <div class="roll-progress" id="roll-progress"></div>
+                    </div>
+                </div>
+                
+                <div class="result-state" id="result-state" style="display: none;">
+                    <div class="result-names" id="result-names">
+                        <!-- 名字将通过JS动态添加 -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <button id="roll-button" class="roll-button pulse" style="position: relative; z-index: 20;">
+                    <i class="fas fa-random button-icon"></i>
+                    <span>随机抽取</span>
+                </button>
+                
+                <button id="emergency-stop-button" class="roll-button stop-button" style="position: relative; z-index: 20; display: none;">
+                    <i class="fas fa-stop button-icon"></i>
+                    <span>紧急停止</span>
+                </button>
+                
+                <div class="control-group glass">
+                    <div class="all-done" id="all-done">
+                        <i class="fas fa-check-circle"></i>
+                        <span>所有人员已完成点名</span>
+                    </div>
+                    
+                    <!-- 模式选择器 -->
+                    <div class="mode-selector">
+                        <label class="mode-title">抽取模式</label>
+                        <div class="mode-options">
+                            <div class="mode-option active" data-mode="1">单人模式</div>
+                            <div class="mode-option" data-mode="2">双人模式</div>
+                            <div class="mode-option" data-mode="4">四人模式</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 主题切换区域 -->
+                    <div class="theme-switcher">
+                        <label class="theme-title">
+                            <span>主题选择</span>
+                            <span class="current-theme" id="current-theme">液态玻璃</span>
+                        </label>
+                        <div class="theme-options">
+                            <div class="theme-option theme-default active" data-theme="default" title="液态玻璃"></div>
+                            <div class="theme-option theme-mint" data-theme="mint" title="清新薄荷"></div>
+                            <div class="theme-option theme-ocean" data-theme="ocean" title="海洋蓝"></div>
+                            <div class="theme-option theme-sunset" data-theme="sunset" title="日落橙"></div>
+                            <div class="theme-option theme-forest" data-theme="forest" title="森林绿"></div>
+                            <div class="theme-option theme-violet" data-theme="violet" title="紫罗兰"></div>
+                            <div class="theme-option theme-tech" data-theme="tech" title="科技灰"></div>
+                            <div class="theme-option theme-aurora" data-theme="aurora" title="极光紫"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 速度控制区域 -->
+                    <div class="speed-control">
+                        <label class="speed-label">
+                            <span>抽取速度</span>
+                            <span class="speed-value" id="speed-value">2.5秒</span>
+                        </label>
+                        <input type="range" min="1" max="5" step="0.5" value="2.5" 
+                               class="speed-slider" id="speed-slider">
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="people-count">
+                            <div class="count-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <p class="count-text">剩余人数</p>
+                                <p class="count-value" id="remaining-count">3</p>
+                            </div>
+                        </div>
+                        
+                        <div class="toggle-group">
+                            <span class="toggle-label">禁止重复</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="no-repeat">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="control-button" id="reset-button">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>重置名单</span>
+                        </button>
+                        <button class="control-button" id="history-button">
+                            <i class="fas fa-history"></i>
+                            <span>点名记录</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom-indicator"></div>
+    </div>
+
+    <div class="modal-backdrop" id="history-modal">
+        <div class="modal glass">
+            <div class="modal-header">
+                <h3 class="modal-title">点名记录</h3>
+                <button class="close-modal" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="history-list">
+                <p class="initial-text" style="text-align: center; padding: 40px 0;">暂无点名记录</p>
+            </div>
+            <div class="modal-footer">
+                <button class="clear-history" id="clear-history">清空所有记录</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 确保DOM完全加载后再执行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM加载完成，初始化应用');
+            
+            // 存储定时器ID
+            let rollingInterval = null;
+            let rollingTimeout = null;
+            let quoteInterval = null;
+            let progressInterval = null;
+            let splashTimerInterval = null;
+            
+            // 学习名言库
+            const learningQuotes = [
+                "学而不思则罔，思而不学则殆。 — 孔子",
+                "知识就是力量。 — 培根",
+                "学习永远不晚。 — 高尔基",
+                "温故而知新，可以为师矣。 — 孔子",
+                "天才是百分之一的灵感加百分之九十九的汗水。 — 爱迪生"
+            ];
+
+            // 人员名单
+            const people = [
+                "A", "B", "C"
+            ];
+
+            // 应用状态
+            let availablePeople = [...people];
+            let isRolling = false;
+            let rollHistory = [];
+            let rollDuration = 2500; // 默认抽取总时长(ms)
+            let currentTheme = "default"; // 默认主题
+            let currentMode = 1; // 默认单人模式
+            let cooldownList = []; // 冷却名单：存储最近被选中的人及其冷却次数
+
+            // 获取DOM元素
+            const rollButton = document.getElementById('roll-button');
+            const emergencyStopButton = document.getElementById('emergency-stop-button');
+            const currentTimeElement = document.getElementById('current-time');
+            const inspirationQuoteElement = document.getElementById('inspiration-quote');
+            const rollProgressContainer = document.getElementById('roll-progress-container');
+            const rollProgress = document.getElementById('roll-progress');
+            // 速度控制元素
+            const speedSlider = document.getElementById('speed-slider');
+            const speedValue = document.getElementById('speed-value');
+            // 主题切换元素
+            const themeOptions = document.querySelectorAll('.theme-option');
+            const currentThemeElement = document.getElementById('current-theme');
+            // 模式选择元素
+            const modeOptions = document.querySelectorAll('.mode-option');
+            const nameDisplay = document.getElementById('name-display');
+            
+            // 获取其他DOM元素
+            const splashScreen = document.getElementById('splash-screen');
+            const splashQuote = document.getElementById('splash-quote');
+            const splashAuthor = document.getElementById('splash-author');
+            const splashTimer = document.getElementById('splash-timer');
+            const splashProgressBar = document.getElementById('splash-progress-bar');
+            const mainContainer = document.getElementById('main-container');
+            
+            // 主界面元素
+            const initialState = document.getElementById('initial-state');
+            const loadingState = document.getElementById('loading-state');
+            const resultState = document.getElementById('result-state');
+            const resultNames = document.getElementById('result-names');
+            const celebration = document.getElementById('celebration');
+            const remainingCount = document.getElementById('remaining-count');
+            const noRepeatCheckbox = document.getElementById('no-repeat');
+            const allDone = document.getElementById('all-done');
+            const resetButton = document.getElementById('reset-button');
+            const historyButton = document.getElementById('history-button');
+            
+            // 弹窗元素
+            const historyModal = document.getElementById('history-modal');
+            const closeModal = document.getElementById('close-modal');
+            const historyList = document.getElementById('history-list');
+            const clearHistory = document.getElementById('clear-history');
+            
+            // 提示框
+            const toast = document.getElementById('toast');
+
+            // 初始化主题
+            function initTheme() {
+                try {
+                    const savedTheme = localStorage.getItem('rollCallTheme');
+                    if (savedTheme && ['default', 'mint', 'ocean', 'sunset', 'forest', 'violet', 'tech', 'aurora'].includes(savedTheme)) {
+                        currentTheme = savedTheme;
+                    }
+                    
+                    // 应用主题
+                    document.documentElement.setAttribute('data-theme', currentTheme);
+                    updateThemeUI();
+                    
+                    // 更新主题名称显示
+                    const themeNames = {
+                        'default': '液态玻璃',
+                        'mint': '清新薄荷',
+                        'ocean': '海洋蓝',
+                        'sunset': '日落橙',
+                        'forest': '森林绿',
+                        'violet': '紫罗兰',
+                        'tech': '科技灰',
+                        'aurora': '极光紫'
+                    };
+                    currentThemeElement.textContent = themeNames[currentTheme];
+                } catch (error) {
+                    console.error('初始化主题错误:', error);
+                    currentTheme = 'default';
+                    document.documentElement.setAttribute('data-theme', currentTheme);
+                    updateThemeUI();
+                }
+            }
+
+            // 更新主题选择UI
+            function updateThemeUI() {
+                themeOptions.forEach(option => {
+                    if (option.dataset.theme === currentTheme) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+            }
+
+            // 切换主题
+            function switchTheme(theme) {
+                if (theme === currentTheme) return;
+                
+                try {
+                    currentTheme = theme;
+                    
+                    // 添加主题切换动画
+                    const container = document.querySelector('.container');
+                    container.style.opacity = '0.7';
+                    
+                    setTimeout(() => {
+                        document.documentElement.setAttribute('data-theme', theme);
+                        updateThemeUI();
+                        
+                        // 保存到本地存储
+                        localStorage.setItem('rollCallTheme', theme);
+                        
+                        // 更新主题名称显示
+                        const themeNames = {
+                            'default': '液态玻璃',
+                            'mint': '清新薄荷',
+                            'ocean': '海洋蓝',
+                            'sunset': '日落橙',
+                            'forest': '森林绿',
+                            'violet': '紫罗兰',
+                            'tech': '科技灰',
+                            'aurora': '极光紫'
+                        };
+                        currentThemeElement.textContent = themeNames[theme];
+                        
+                        container.style.opacity = '1';
+                        
+                        // 显示提示
+                        showToast(`已切换至「${themeNames[theme]}」主题`);
+                    }, 300);
+                    
+                } catch (error) {
+                    console.error('切换主题错误:', error);
+                    showToast('主题切换失败', true);
+                }
+            }
+
+            // 初始化启动画面
+            function initSplashScreen() {
+                try {
+                    // 检查关键元素是否存在
+                    if (!splashScreen || !mainContainer) {
+                        console.error('启动画面关键元素缺失');
+                        // 直接显示主界面
+                        if (splashScreen) splashScreen.style.display = 'none';
+                        if (mainContainer) {
+                            mainContainer.style.display = 'block';
+                            initializeApp();
+                        }
+                        return;
+                    }
+                    
+                    // 显示启动画面
+                    splashScreen.style.display = 'flex';
+                    mainContainer.style.display = 'none';
+                    
+                    // 设置随机名言
+                    const randomQuote = learningQuotes[Math.floor(Math.random() * learningQuotes.length)];
+                    const [quoteText, quoteAuthor] = randomQuote.split('—').map(part => part.trim());
+                    if (splashQuote) splashQuote.textContent = quoteText;
+                    if (splashAuthor) splashAuthor.textContent = `— ${quoteAuthor}`;
+                    
+                    // 进度条动画
+                    let progress = 0;
+                    const progressInterval = setInterval(() => {
+                        try {
+                            progress += 1;
+                            if (splashProgressBar) splashProgressBar.style.width = `${progress}%`;
+                            if (progress >= 100) clearInterval(progressInterval);
+                        } catch (error) {
+                            console.error('进度条更新错误:', error);
+                            clearInterval(progressInterval);
+                        }
+                    }, 30);
+                    
+                    // 倒计时逻辑
+                    let seconds = 3;
+                    if (splashTimer) splashTimer.textContent = `${seconds} 秒后进入`;
+                    
+                    // 清除可能存在的旧定时器
+                    if (splashTimerInterval) clearInterval(splashTimerInterval);
+                    
+                    // 设置新的倒计时定时器
+                    splashTimerInterval = setInterval(() => {
+                        try {
+                            seconds--;
+                            if (seconds <= 0) {
+                                completeSplashScreen(progressInterval);
+                            } else {
+                                if (splashTimer) {
+                                    splashTimer.textContent = `${seconds} 秒后进入`;
+                                }
+                            }
+                        } catch (error) {
+                            console.error('倒计时错误:', error);
+                            clearInterval(splashTimerInterval);
+                            clearInterval(progressInterval);
+                            forceEnterMainApp();
+                        }
+                    }, 1000);
+                    
+                    // 安全机制：即使定时器失败，5秒后也强制进入主界面
+                    setTimeout(() => {
+                        if (splashScreen && getComputedStyle(splashScreen).display !== 'none') {
+                            console.log('安全机制触发：强制进入主界面');
+                            clearInterval(splashTimerInterval);
+                            clearInterval(progressInterval);
+                            forceEnterMainApp();
+                        }
+                    }, 5000);
+                    
+                } catch (error) {
+                    console.error('启动画面初始化错误:', error);
+                    forceEnterMainApp();
+                }
+            }
+            
+            // 完成启动画面并进入主应用
+            function completeSplashScreen(progressInterval) {
+                clearInterval(splashTimerInterval);
+                clearInterval(progressInterval);
+                
+                // 确保进度条完成
+                if (splashProgressBar) splashProgressBar.style.width = '100%';
+                
+                // 隐藏启动画面，显示主界面
+                if (splashScreen) {
+                    splashScreen.style.opacity = 0;
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                        if (mainContainer) {
+                            mainContainer.style.display = 'block';
+                            initializeApp();
+                        }
+                    }, 800);
+                } else if (mainContainer) {
+                    mainContainer.style.display = 'block';
+                    initializeApp();
+                }
+            }
+            
+            // 强制进入主应用（启动失败时使用）
+            function forceEnterMainApp() {
+                console.log('强制进入主应用');
+                if (splashScreen) {
+                    splashScreen.style.opacity = 0;
+                    splashScreen.style.display = 'none';
+                }
+                if (mainContainer) {
+                    mainContainer.style.display = 'block';
+                    initializeApp();
+                    showToast('启动过程中出现问题，已强制进入应用', true);
+                }
+            }
+            
+            // 初始化应用（在启动画面完成后调用）
+            function initializeApp() {
+                try {
+                    console.log('初始化应用程序');
+                    startUpdatingTime();
+                    startShowingQuotes();
+                    updateRemainingCount();
+                    initTheme();
+                    loadRollHistory();
+                    updateHistoryUI();
+                    
+                    // 检查是否所有人员都已抽取过
+                    checkAllDone();
+                } catch (error) {
+                    console.error('应用初始化错误:', error);
+                    showToast('应用初始化失败', true);
+                }
+            }
+
+            // 更新时间显示
+            function updateTime() {
+                try {
+                    const now = new Date();
+                    const hours = now.getHours().toString().padStart(2, '0');
+                    const minutes = now.getMinutes().toString().padStart(2, '0');
+                    const seconds = now.getSeconds().toString().padStart(2, '0');
+                    currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+                } catch (error) {
+                    console.error('更新时间错误:', error);
+                }
+            }
+
+            // 启动时间更新
+            function startUpdatingTime() {
+                updateTime();
+                setInterval(updateTime, 1000);
+            }
+
+            // 显示随机名言
+            function showRandomQuote() {
+                try {
+                    inspirationQuoteElement.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        const randomIndex = Math.floor(Math.random() * learningQuotes.length);
+                        inspirationQuoteElement.textContent = learningQuotes[randomIndex];
+                        inspirationQuoteElement.style.opacity = 1;
+                    }, 500);
+                } catch (error) {
+                    console.error('显示名言错误:', error);
+                }
+            }
+
+            // 启动名言轮播
+            function startShowingQuotes() {
+                showRandomQuote();
+                quoteInterval = setInterval(showRandomQuote, 15000);
+            }
+
+            // 更新剩余人数
+            function updateRemainingCount() {
+                try {
+                    remainingCount.textContent = availablePeople.length;
+                } catch (error) {
+                    console.error('更新剩余人数错误:', error);
+                    showToast('更新数据时发生错误', true);
+                }
+            }
+
+            // 创建粒子效果
+            function createParticles() {
+                try {
+                    const container = document.querySelector('.name-display');
+                    const particleCount = 40;
+                    
+                    for (let i = 0; i < particleCount; i++) {
+                        const particle = document.createElement('div');
+                        particle.classList.add('particle');
+                        
+                        // 根据当前主题调整粒子颜色
+                        const root = document.documentElement;
+                        const textColor = getComputedStyle(root).getPropertyValue('--text-primary');
+                        
+                        particle.style.backgroundColor = `${textColor}80`; // 添加透明度
+                        
+                        const size = Math.random() * 15 + 2;
+                        const startX = container.clientWidth / 2;
+                        const startY = container.clientHeight / 2;
+                        const duration = Math.random() * 3 + 1;
+                        const destX = (Math.random() - 0.5) * 500;
+                        const destY = (Math.random() - 0.5) * 400;
+                        const delay = i * 30;
+                        
+                        particle.style.width = `${size}px`;
+                        particle.style.height = `${size}px`;
+                        particle.style.left = `${startX}px`;
+                        particle.style.top = `${startY}px`;
+                        particle.style.transform = 'translate(-50%, -50%)';
+                        particle.style.transition = `all ${duration}s cubic-bezier(0.18, 0.89, 0.32, 1.28)`;
+                        particle.style.opacity = '0';
+                        
+                        container.appendChild(particle);
+                        
+                        setTimeout(() => {
+                            particle.style.opacity = '0.8';
+                        }, delay);
+                        
+                        setTimeout(() => {
+                            particle.style.transform = `translate(calc(-50% + ${destX}px), calc(-50% + ${destY}px))`;
+                            particle.style.opacity = '0';
+                        }, delay + 100);
+                        
+                        setTimeout(() => {
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
+                        }, delay + duration * 1000);
+                    }
+                } catch (error) {
+                    console.error('粒子效果创建错误:', error);
+                }
+            }
+            
+            // 创建彩色纸屑效果
+            function createConfetti() {
+                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffaa1d', '#a77dc2', '#ff8c42'];
+                const count = 80;
+                
+                // 清除现有纸屑
+                celebration.innerHTML = '';
+                
+                for (let i = 0; i < count; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // 随机颜色、大小和位置
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const size = Math.random() * 8 + 4;
+                    const startX = celebration.clientWidth * Math.random();
+                    const startY = -10;
+                    
+                    confetti.style.backgroundColor = color;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.left = `${startX}px`;
+                    confetti.style.top = `${startY}px`;
+                    
+                    // 随机旋转角度
+                    const rotation = Math.random() * 360;
+                    confetti.style.transform = `rotate(${rotation}deg)`;
+                    
+                    celebration.appendChild(confetti);
+                    
+                    // 延迟显示以创建瀑布效果
+                    setTimeout(() => {
+                        confetti.style.opacity = '1';
+                        confetti.style.transition = `
+                            all ${Math.random() * 3 + 2}s cubic-bezier(0.1, 0.8, 0.9, 1),
+                            opacity 0.3s ease
+                        `;
+                        
+                        // 随机飘落路径
+                        const endX = startX + (Math.random() - 0.5) * 100;
+                        const endY = celebration.clientHeight + 20;
+                        
+                        setTimeout(() => {
+                            confetti.style.transform = `translate(${endX - startX}px, ${endY - startY}px) rotate(${rotation + 180}deg)`;
+                            confetti.style.opacity = '0';
+                        }, 50);
+                        
+                        // 动画结束后移除元素
+                        setTimeout(() => {
+                            if (confetti.parentNode) {
+                                confetti.parentNode.removeChild(confetti);
+                            }
+                        }, (Math.random() * 3 + 2) * 1000 + 500);
+                    }, i * 50);
+                }
+            }
+
+            // 名字显示特效
+            function showNamesWithEffects(names) {
+                try {
+                    // 清空结果容器
+                    resultNames.innerHTML = '';
+                    
+                    // 创建名字元素并添加动画
+                    names.forEach((name, index) => {
+                        const nameElement = document.createElement('div');
+                        nameElement.classList.add('result-name');
+                        nameElement.textContent = name;
+                        
+                        // 创建名字效果容器
+                        const effectContainer = document.createElement('div');
+                        effectContainer.classList.add('name-effect-container');
+                        
+                        // 创建发光效果
+                        const nameGlow = document.createElement('div');
+                        nameGlow.classList.add('name-glow');
+                        
+                        // 创建波纹效果
+                        const ripple1 = document.createElement('div');
+                        ripple1.classList.add('ripple');
+                        const ripple2 = document.createElement('div');
+                        ripple2.classList.add('ripple');
+                        
+                        // 组装效果容器
+                        effectContainer.appendChild(nameGlow);
+                        effectContainer.appendChild(ripple1);
+                        effectContainer.appendChild(ripple2);
+                        effectContainer.appendChild(nameElement);
+                        
+                        resultNames.appendChild(effectContainer);
+                        
+                        // 触发动画
+                        setTimeout(() => {
+                            nameElement.classList.add('name-appear');
+                            
+                            setTimeout(() => {
+                                nameGlow.classList.add('glow-animate');
+                            }, 150);
+                            
+                            setTimeout(() => {
+                                ripple1.classList.add('ripple-animate');
+                            }, 250);
+                            
+                            setTimeout(() => {
+                                ripple2.classList.add('ripple-animate');
+                            }, 450);
+                        }, index * 200); // 依次显示每个名字，间隔200ms
+                    });
+                    
+                    // 添加背景动画
+                    const nameDisplay = document.querySelector('.name-display');
+                    nameDisplay.classList.add('result-active');
+                    
+                    // 创建粒子效果
+                    setTimeout(() => {
+                        createParticles();
+                    }, 300);
+                    
+                    // 创建彩色纸屑效果
+                    createConfetti();
+                    
+                    // 3秒后移除背景动画
+                    setTimeout(() => {
+                        nameDisplay.classList.remove('result-active');
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error('名字显示特效错误:', error);
+                    resultNames.innerHTML = '';
+                    names.forEach(name => {
+                        const nameElement = document.createElement('div');
+                        nameElement.classList.add('result-name');
+                        nameElement.textContent = name;
+                        nameElement.style.opacity = '1';
+                        nameElement.style.transform = 'scale(1) translateY(0)';
+                        resultNames.appendChild(nameElement);
+                    });
+                }
+            }
+
+            // 更新冷却名单
+            function updateCooldownList() {
+                // 减少所有冷却计数
+                cooldownList = cooldownList.map(item => ({
+                    name: item.name,
+                    cooldown: item.cooldown - 1
+                })).filter(item => item.cooldown > 0); // 移除冷却计数为0的人
+            }
+
+            // 获取可选择的人员列表（排除冷却中的人）
+            function getAvailableForSelection() {
+                // 更新冷却列表
+                updateCooldownList();
+                
+                // 获取冷却中的名字
+                const cooldownNames = cooldownList.map(item => item.name);
+                
+                // 如果开启了禁止重复，使用availablePeople
+                if (noRepeatCheckbox.checked) {
+                    return availablePeople.filter(name => !cooldownNames.includes(name));
+                }
+                
+                // 否则使用全部人员，但排除冷却中的
+                return people.filter(name => !cooldownNames.includes(name));
+            }
+
+            // 添加到冷却名单
+            function addToCooldown(name) {
+                // 检查是否已在冷却名单中，如果是则刷新冷却时间
+                const existingIndex = cooldownList.findIndex(item => item.name === name);
+                if (existingIndex !== -1) {
+                    cooldownList[existingIndex].cooldown = 5; // 重置为5次
+                } else {
+                    cooldownList.push({ name, cooldown: 5 }); // 5次冷却
+                }
+            }
+
+            // 停止点名过程
+            function stopRolling(showResult = true) {
+                console.log('停止点名过程');
+                
+                // 清除所有定时器
+                if (rollingInterval) {
+                    clearInterval(rollingInterval);
+                    rollingInterval = null;
+                }
+                
+                if (rollingTimeout) {
+                    clearTimeout(rollingTimeout);
+                    rollingTimeout = null;
+                }
+                
+                // 清除进度条定时器
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                
+                // 更新状态
+                isRolling = false;
+                rollButton.style.display = 'flex';
+                emergencyStopButton.style.display = 'none';
+                rollButton.disabled = false;
+                nameDisplay.classList.remove('rolling-active');
+                rollProgressContainer.classList.remove('active');
+                
+                if (!showResult) {
+                    // 如果不需要显示结果，回到初始状态
+                    loadingState.style.display = 'none';
+                    initialState.style.display = 'block';
+                    return;
+                }
+                
+                // 选择最终结果
+                const available = getAvailableForSelection();
+                
+                // 检查是否有足够的人可供选择
+                if (available.length === 0) {
+                    showToast('没有可选择的人员，请重置名单', true);
+                    loadingState.style.display = 'none';
+                    initialState.style.display = 'block';
+                    return;
+                }
+                
+                // 根据当前模式选择相应数量的人
+                let selectedNames = [];
+                let tempAvailable = [...available];
+                
+                for (let i = 0; i < currentMode; i++) {
+                    if (tempAvailable.length === 0) break;
+                    
+                    // 随机选择一个人
+                    const randomIndex = Math.floor(Math.random() * tempAvailable.length);
+                    const selectedName = tempAvailable[randomIndex];
+                    
+                    // 添加到结果
+                    selectedNames.push(selectedName);
+                    
+                    // 将选择的人加入冷却名单
+                    addToCooldown(selectedName);
+                    
+                    // 如果开启了禁止重复，从可用列表中移除
+                    if (noRepeatCheckbox.checked) {
+                        const indexToRemove = availablePeople.findIndex(name => name === selectedName);
+                        if (indexToRemove !== -1) {
+                            availablePeople.splice(indexToRemove, 1);
+                        }
+                    }
+                    
+                    // 从临时可用列表中移除，确保不会重复选择同一个人
+                    tempAvailable.splice(randomIndex, 1);
+                }
+                
+                // 更新剩余人数
+                updateRemainingCount();
+                
+                // 保存到历史记录
+                saveToHistory(selectedNames);
+                
+                // 显示结果
+                loadingState.style.display = 'none';
+                resultState.style.display = 'block';
+                
+                // 显示名字特效
+                showNamesWithEffects(selectedNames);
+                
+                // 检查是否所有人员都已抽取过
+                checkAllDone();
+            }
+
+            // 检查是否所有人员都已抽取过
+            function checkAllDone() {
+                if (noRepeatCheckbox.checked && availablePeople.length === 0) {
+                    allDone.style.display = 'block';
+                    rollButton.disabled = true;
+                } else {
+                    allDone.style.display = 'none';
+                    rollButton.disabled = false;
+                }
+            }
+
+            // 开始点名
+            function startRolling() {
+                if (isRolling) return;
+                
+                // 检查是否有可用人员
+                const available = getAvailableForSelection();
+                if (available.length < currentMode) {
+                    showToast(`至少需要${currentMode}名可用人员才能开始`, true);
+                    return;
+                }
+                
+                // 更新状态
+                isRolling = true;
+                rollButton.style.display = 'none';
+                emergencyStopButton.style.display = 'flex';
+                initialState.style.display = 'none';
+                resultState.style.display = 'none';
+                loadingState.style.display = 'block';
+                nameDisplay.classList.add('rolling-active');
+                rollProgressContainer.classList.add('active');
+                rollProgress.style.width = '0%';
+                
+                // 重置进度条
+                let progress = 0;
+                const progressIncrement = 100 / (rollDuration / 50);
+                
+                // 更新进度条
+                progressInterval = setInterval(() => {
+                    progress += progressIncrement;
+                    if (progress >= 100) progress = 100;
+                    rollProgress.style.width = `${progress}%`;
+                }, 50);
+                
+                // 随机滚动显示名字
+                rollingInterval = setInterval(() => {
+                    const available = getAvailableForSelection();
+                    if (available.length === 0) {
+                        stopRolling();
+                        return;
+                    }
+                    
+                    // 清空当前显示
+                    resultNames.innerHTML = '';
+                    
+                    // 随机显示相应数量的名字
+                    let tempAvailable = [...available];
+                    for (let i = 0; i < currentMode; i++) {
+                        if (tempAvailable.length === 0) break;
+                        
+                        const randomIndex = Math.floor(Math.random() * tempAvailable.length);
+                        const randomName = tempAvailable[randomIndex];
+                        
+                        const nameElement = document.createElement('div');
+                        nameElement.classList.add('result-name');
+                        nameElement.textContent = randomName;
+                        nameElement.style.opacity = '1';
+                        nameElement.style.transform = 'scale(1) translateY(0)';
+                        
+                        resultNames.appendChild(nameElement);
+                        
+                        // 从临时列表中移除，避免重复
+                        tempAvailable.splice(randomIndex, 1);
+                    }
+                }, 80); // 滚动速度
+                
+                // 设置自动停止
+                rollingTimeout = setTimeout(() => {
+                    stopRolling();
+                }, rollDuration);
+            }
+
+            // 保存到历史记录
+            function saveToHistory(names) {
+                const now = new Date();
+                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                rollHistory.unshift({
+                    names: names,
+                    time: timeStr,
+                    timestamp: now.getTime()
+                });
+                
+                // 限制历史记录数量
+                if (rollHistory.length > 50) {
+                    rollHistory = rollHistory.slice(0, 50);
+                }
+                
+                // 保存到本地存储
+                try {
+                    localStorage.setItem('rollCallHistory', JSON.stringify(rollHistory));
+                } catch (error) {
+                    console.error('保存历史记录失败:', error);
+                }
+                
+                // 更新历史记录UI
+                updateHistoryUI();
+            }
+
+            // 加载历史记录
+            function loadRollHistory() {
+                try {
+                    const savedHistory = localStorage.getItem('rollCallHistory');
+                    if (savedHistory) {
+                        rollHistory = JSON.parse(savedHistory);
+                    }
+                } catch (error) {
+                    console.error('加载历史记录失败:', error);
+                    rollHistory = [];
+                    // 清除损坏的历史记录
+                    localStorage.removeItem('rollCallHistory');
+                }
+            }
+
+            // 更新历史记录UI
+            function updateHistoryUI() {
+                if (rollHistory.length === 0) {
+                    historyList.innerHTML = '<p class="initial-text" style="text-align: center; padding: 40px 0;">暂无点名记录</p>';
+                    return;
+                }
+                
+                let html = '';
+                rollHistory.forEach(item => {
+                    html += `
+                        <div class="history-item">
+                            <div class="history-name">${item.names.join('、')}</div>
+                            <div class="history-time">${item.time}</div>
+                        </div>
+                    `;
+                });
+                
+                historyList.innerHTML = html;
+            }
+
+            // 清空历史记录
+            function clearRollHistory() {
+                rollHistory = [];
+                try {
+                    localStorage.removeItem('rollCallHistory');
+                } catch (error) {
+                    console.error('清空历史记录失败:', error);
+                }
+                updateHistoryUI();
+                showToast('历史记录已清空');
+            }
+
+            // 重置名单
+            function resetNames() {
+                availablePeople = [...people];
+                cooldownList = [];
+                updateRemainingCount();
+                checkAllDone();
+                initialState.style.display = 'block';
+                resultState.style.display = 'none';
+                loadingState.style.display = 'none';
+                showToast('名单已重置');
+            }
+
+            // 显示提示消息
+            function showToast(message, isError = false) {
+                toast.textContent = message;
+                toast.classList.add('active');
+                if (isError) {
+                    toast.classList.add('error');
+                } else {
+                    toast.classList.remove('error');
+                }
+                
+                setTimeout(() => {
+                    toast.classList.remove('active');
+                }, 3000);
+            }
+
+            // 切换抽取模式
+            function switchMode(mode) {
+                if (mode === currentMode || isRolling) return;
+                
+                currentMode = parseInt(mode);
+                
+                // 更新UI
+                modeOptions.forEach(option => {
+                    if (parseInt(option.dataset.mode) === currentMode) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+                
+                // 更新名字显示容器的类
+                nameDisplay.className = `name-display glass mode-${currentMode}`;
+                
+                showToast(`已切换至${currentMode}人模式`);
+            }
+
+            // 调整布局以适应屏幕大小
+            function adjustLayoutForScreenSize() {
+                const updateLayout = () => {
+                    const mainContent = document.querySelector('.main-content');
+                    const windowHeight = window.innerHeight;
+                    
+                    if (window.innerWidth < 768) {
+                        // 移动设备布局
+                        mainContent.style.height = `calc(100vh - 130px)`;
+                    } else {
+                        // 桌面设备布局
+                        mainContent.style.height = `calc(100vh - 140px)`;
+                    }
+                };
+                
+                // 初始调整
+                updateLayout();
+                
+                // 窗口大小改变时调整
+                window.addEventListener('resize', updateLayout);
+            }
+
+            // 绑定事件监听
+            function bindEvents() {
+                // 点名按钮
+                rollButton.addEventListener('click', startRolling);
+                emergencyStopButton.addEventListener('click', () => stopRolling());
+                
+                // 速度控制
+                speedSlider.addEventListener('input', function() {
+                    const value = parseFloat(this.value);
+                    rollDuration = value * 1000; // 转换为毫秒
+                    speedValue.textContent = `${value}秒`;
+                });
+                
+                // 主题切换
+                themeOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        switchTheme(this.dataset.theme);
+                    });
+                });
+                
+                // 模式切换
+                modeOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        switchMode(this.dataset.mode);
+                    });
+                });
+                
+                // 重置按钮
+                resetButton.addEventListener('click', resetNames);
+                
+                // 历史记录按钮
+                historyButton.addEventListener('click', () => {
+                    historyModal.classList.add('active');
+                });
+                
+                // 关闭弹窗
+                closeModal.addEventListener('click', () => {
+                    historyModal.classList.remove('active');
+                });
+                
+                // 点击弹窗背景关闭
+                historyModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        historyModal.classList.remove('active');
+                    }
+                });
+                
+                // 清空历史记录
+                clearHistory.addEventListener('click', clearRollHistory);
+                
+                // 禁止重复切换
+                noRepeatCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        showToast('已开启禁止重复点名');
+                    } else {
+                        showToast('已关闭禁止重复点名');
+                    }
+                    checkAllDone();
+                });
+                
+                // 键盘事件
+                document.addEventListener('keydown', function(e) {
+                    // 空格键开始/停止
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        if (isRolling) {
+                            stopRolling();
+                        } else {
+                            startRolling();
+                        }
+                    }
+                    
+                    // R键重置
+                    if (e.code === 'KeyR' && !isRolling) {
+                        resetNames();
+                    }
+                    
+                    // H键显示历史记录
+                    if (e.code === 'KeyH' && !isRolling) {
+                        historyModal.classList.toggle('active');
+                    }
+                });
+            }
+
+            // 初始化应用
+            function init() {
+                try {
+                    // 绑定事件
+                    bindEvents();
+                    
+                    // 启动启动画面
+                    initSplashScreen();
+                } catch (error) {
+                    console.error('应用初始化失败:', error);
+                    // 直接显示主界面作为最后的补救措施
+                    if (splashScreen) splashScreen.style.display = 'none';
+                    if (mainContainer) {
+                        mainContainer.style.display = 'block';
+                        initializeApp();
+                    }
+                    showToast('应用初始化失败', true);
+                }
+            }
+
+            // 启动应用
+            init();
+        });
+    </script>
+</body>
+</html>
